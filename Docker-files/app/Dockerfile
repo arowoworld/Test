@@ -1,11 +1,19 @@
-FROM tomcat:10-jdk21
-LABEL "Project"="Vprofile"
-LABEL "Author"="Imran"
+    FROM maven:3.9.9-eclipse-temurin-21-jammy as Builder
 
-RUN rm -rf /usr/local/tomcat/webapps/*
-COPY target/vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war
+    WORKDIR /app
 
-EXPOSE 8080
-CMD ["catalina.sh", "run"]
-WORKDIR /usr/local/tomcat/
-VOLUME /usr/local/tomcat/webapps
+    RUN apt update -y && git clone -b docker https://github.com/hkhcoder/vprofile-project.git && cd /app/vprofile-project
+
+    WORKDIR /app/vprofile-project
+
+    RUN mvn clean install
+
+
+    FROM tomcat:10-jdk21
+    
+    RUN rm -rf /usr/local/tomcat/webapps/*
+
+    COPY --from=Builder /app/vprofile-project/target/vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war
+
+
+
