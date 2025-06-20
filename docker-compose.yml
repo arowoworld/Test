@@ -3,7 +3,7 @@ version: "3.9"
 services:
   app:
     container_name: vproapp
-    build: ./root/app
+    build: ./Docker-files/app
     volumes:
       - appdata:/usr/local/tomcat/logs
     environment:
@@ -15,7 +15,7 @@ services:
 
   db:
     container_name: vprodb
-    build: ./root/db
+    build: ./Docker-files/db
     networks:
       - vpronet
     volumes:
@@ -23,7 +23,7 @@ services:
 
   web:
     container_name: webapp
-    build: ./root/web
+    build: ./Docker-file/web
     ports:
       - "80:80"
     networks:
