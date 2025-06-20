@@ -5,7 +5,7 @@ services:
     container_name: vproapp
     build: ./app
     volumes:
-      - appdata: /usr/local/tomcat/logs
+      - appdata:/usr/local/tomcat/logs
     environment:
       MAVEN_OPTS: "-Xmx1024m"
     networks:
@@ -19,7 +19,7 @@ services:
     networks:
       - vpronet
     volumes:
-      - dbdata: /var/lib/mysql
+      - dbdata:/var/lib/mysql
 
   web:
     container_name: webapp
