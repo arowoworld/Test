@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  app:
+    container_name: vproapp
+    build: ./app
+    volumes:
+      - appdata: /usr/local/tomcat/logs
+    environment:
+      MAVEN_OPTS: "-Xmx1024m"
+    networks:
+      - vpronet
+    depends_on:
+      - db
+
+  db:
+    container_name: vprodb
+    build: ./db
+    networks:
+      - vpronet
+    volumes:
+      - dbdata: /var/lib/mysql
+
+  web:
+    container_name: webapp
+    build: ./web
+    ports:
+      - "80:80"
+    networks:
+      - vpronet
+    depends_on:
+      - app
+
+  memcache:
+    container_name: vprocache01
+    image: memcached
+    networks:
+      - vpronet
+
+  rabbitmq:
+    container_name: vpromq01
+    image: rabbitmq
+    networks:
+      - vpronet
+
+volumes:
+  appdata:
+  dbdata:
+
+networks:
+  vpronet:
