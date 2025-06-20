@@ -23,7 +23,7 @@ services:
 
   web:
     container_name: webapp
-    build: ./Docker-file/web
+    build: ./Docker-files/web
     ports:
       - "80:80"
     networks:
